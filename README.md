@@ -15,6 +15,6 @@ It should run in a http server environment, along with a ipfs node … every req
 
 Not all developers would have to run a ipfs node, though it would help ... nodes are not required to store all data neither to to be online 24hs, meaning that you can eventually collaborate even by using a browser ... the magic of distribution, the more people uses the system, the better it becomes ... :)
 
-Try a live demo here: http://pulsartronic.duckdns.org/ don’t expect speed, specially if it is the first time your region is accessed.
+Try a live demo here: http://pulsartronic.duckdns.org/ don’t expect speed, specially if it is the first time your region is accessed. Gateway list is short and sometimes they fail
 
 to be continued :) ... (i have 20 minutes a day (or less) to work on this :()
