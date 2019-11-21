@@ -3,7 +3,7 @@ Tile server based on IPFS
 
 It is a small project that unifies openstreetmap.org along with ipfs
 
-The aim is to create a free tile server system for developers who are creating map featured apps.
+The aim is to create a free X/Y/Z tile server system for developers who are creating map featured apps.
 
 Resources for this pourpose are heavy in data storage and transmission. Now they can be soften.
 
@@ -11,7 +11,7 @@ This project is a hybrid between classic and distributed web … it will be modi
 
 Source code is for illustration pourposes, by the moment, downloads will be soon fully functional.
 
-It should run in a http server environment, along with a ipfs node … every request, it would add files (if needed) to ipfs and responds with a http redirection to a randomly chosen gateway … (the list is short and static, by the moment) and i think it would be nice to, also, communicate with the ipfs network through js-ipfs by creating an instance in the browser …
+It should run in a http server environment, along with a ipfs node … every request, it would add files (if needed) to ipfs and responds with a http redirection to a randomly chosen gateway … (the list is short and static, by the moment) and i think it would be nice to, also, communicate with the ipfs network through js-ipfs by creating an instance in the browser, then we could do things like /ipns/Qmblabla/X/Y/Z to access updated data, where Qmblabla would be managed by developers (their own)
 
 Try a live demo here: http://pulsartronic.duckdns.org/
 
