@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>pulsartronic.com - IPFS Map</title>
+		<link rel="stylesheet" type="text/css" href="/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/css/index.css" />
+		
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="apple-touch-icon" href="/img/memory-chip.png">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" sizes="196x196" href="/img/memory-chip.png">
+		<meta name="Description" content="GPS tracker">
+		<link rel="canonical" href="https://pulsartronic.com" />
+		
+		<meta property="og:image" content="https://pulsartronic.com/img/memory-chip.png"/>
+		<meta property="og:title" content="IPFS tile server"/>
+		<meta property="og:type" content="game"/>
+		<meta property="og:url" content="https://pulsartronic.com"/>
+		<meta property="og:site_name" content=""/>
+		<meta property="og:description" content="IPFS tile server example"/>
+
+		<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+	</head>
+
+	<body>
+		<div class="header"><div class="logo"><div class="title">PULSARTRONIC.COM</div></div></div>
+		<div class="PageContent">
+			<div class="ContentMarc">
+				<div id="gpsmap" style="width:100%;">
+					<div class="ChoiceRow" id="ipfsmap" style="border: none;">
+						<div id="ipfsmap.map" class="Map"></div>
+					</div>
+				</div>
+				<div class="ChoiceRow">
+					<div class="TextContent" style="text-align: center; font-style: italic; color: #888;">PULSARTRONIC.COM</div>
+					<div class="FooterLogo">
+						<svg version="1.1"id="Capa_1"xmlns="http://www.w3.org/2000/svg"xmlns:xlink="http://www.w3.org/1999/xlink"x="0px"y="0px"width="100%"height="100%"viewBox="0 0 459 459"style="enable-background:new 0 0 459 459;"xml:space="preserve"><g><g id="memory"><path style="fill:#288e8e;"d="M306,153H153v153h153V153z M255,255h-51v-51h51V255z M459,204v-51h-51v-51c0-28.05-22.95-51-51-51h-51V0h-51v51h-51V0h-51 v51h-51c-28.05,0-51,22.95-51,51v51H0v51h51v51H0v51h51v51c0,28.05,22.95,51,51,51h51v51h51v-51h51v51h51v-51h51 c28.05,0,51-22.95,51-51v-51h51v-51h-51v-51H459z M357,357H102V102h255V357z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+					</div>
+				</div>
+				<div class="ContentFooter">
+					copyright © 2019 - <script>document.write((new Date()).getFullYear())</script> | pulsartronic.com | all rights reserved
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script>
+
+let ipfsmap = document.getElementById("ipfsmap");
+
+ipfsmap.init = async function() {
+	let vsource = new ol.source.Vector({features: []});
+	var iconStyle = new ol.style.Style({
+		"image": new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+			"anchor": [0.5, 0.85],
+			"anchorXUnits": 'fraction',
+			"anchorYUnits": 'fraction',
+			"opacity": 1,
+			"src": '../img/pointer.svg'
+		}))
+	});
+	var vlayer = new ol.layer.Vector({"source":vsource, "style":iconStyle});
+	vlayer.source = vsource;
+
+	let dsource = new ol.source.Vector({features: []});
+	var dotsStyle = new ol.style.Style({
+		"image": new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+			"anchor": [0.5, 0.5],
+			"anchorXUnits": 'fraction',
+			"anchorYUnits": 'fraction',
+			"opacity": 1,
+			"src": '../img/dot.svg'
+		}))
+	});
+	var dlayer = new ol.layer.Vector({"source":dsource, "style":dotsStyle});
+	dlayer.source = dsource;
+
+	let csource = new ol.source.Vector({"projection":'EPSG:4326'});
+	let clayer = new ol.layer.Vector({"source":csource});
+	clayer.source = csource;
+
+	let tsource = new ol.source.OSM({url:"tile.php?z={z}&x={x}&y={y}"});
+	let tlayer = new ol.layer.Tile({"source":tsource});
+
+	let layers = [tlayer, clayer, dlayer, vlayer];
+
+	let saved = localStorage.getItem("coords") || "[2.191783379982894, 41.4349839095253]";
+	let savedCoords = JSON.parse(saved);
+
+	let zoom = +localStorage.getItem("zoom") || 12;
+
+	let view = new ol.View({"center":ol.proj.fromLonLat(savedCoords), "zoom":zoom});
+
+	this.map = new ol.Map({"target": 'ipfsmap.map', "layers":layers, "view":view});
+	this.map.vlayer = vlayer;
+	this.map.dlayer = dlayer;
+	this.map.clayer = clayer;
+
+	this.map.on('moveend', (e) => {
+		let coords = ol.proj.transform(this.map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326');
+		localStorage.setItem("coords", JSON.stringify(coords));
+
+		let zoom = this.map.getView().getZoom();
+		localStorage.setItem("zoom", zoom);
+	});
+};
+
+window.onload = function() {
+	ipfsmap.init();
+};
+
+</script>
