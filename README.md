@@ -9,4 +9,6 @@ Resources for this pourpose are heavy in data storage and transmission. Now they
 
 The source code is for illustration pourposes, by the moment, downloads will be soon fully functional.
 
+Try a live demo here: http://pulsartronic.duckdns.org/
+
 to be continued :) ... (i have 20 minutes a day (or less) to work on this :()
