@@ -13,7 +13,7 @@ Source code is for illustration pourposes, by the moment, downloads will be soon
 
 It should run in a http server environment, along with a ipfs node … every request, it would add files (if needed) to ipfs and responds with a http redirection to a randomly chosen gateway … (the list is short and static, by the moment) and i think it would be nice to, also, communicate with the ipfs network through js-ipfs by creating an instance in the browser, then we could do things like /ipns/Qmblabla/X/Y/Z to access updated data, where Qmblabla would be managed by developers (their own, yet the files would be the same :)
 
-Not all developers would have to run a ipfs node, though it would help ... nodes are not required to store all data neither to to be online 24hs, meaning that you can eventually collaborate even by using a browser ... the magic of ipf is, the more people uses the system, the better it becomes ... :)
+Not all developers would have to run a ipfs node, though it would help ... nodes are not required to store all data neither to to be online 24hs, meaning that you can eventually collaborate even by using a browser ... the magic of distribution, the more people uses the system, the better it becomes ... :)
 
 Try a live demo here: http://pulsartronic.duckdns.org/ don’t expect speed, specially if it is the first time your region is accessed.
 
