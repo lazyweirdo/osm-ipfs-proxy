@@ -16,5 +16,7 @@ It should run in a http server environment, along with a ipfs node … every req
 Not all developers would have to run a ipfs node, though it would help ... nodes are not required to store all data neither to to be online 24hs, meaning that you can eventually collaborate even by using a browser
 
 Try a live demo here: http://pulsartronic.duckdns.org/ don’t expect speed, specially if it is the first time your region is accessed. Gateway list is short and sometimes they fail
+It basically access links like this: http://pulsartronic.duckdns.org/tile.php?z=7&x=66&y=46 for every tile it needs
+
 
 to be continued :) ... (i have 20 minutes a day (or less) to work on this :()
