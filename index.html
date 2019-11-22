@@ -31,59 +31,18 @@
 let TILE_SERVER = /*'http://pulsartronic.duckdns.org/' + */"tile.php?z={z}&x={x}&y={y}";
 
 let ipfsmap = {};
-
 ipfsmap.init = async function() {
-	let vsource = new ol.source.Vector({features: []});
-	var iconStyle = new ol.style.Style({
-		"image": new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-			"anchor": [0.5, 0.85],
-			"anchorXUnits": 'fraction',
-			"anchorYUnits": 'fraction',
-			"opacity": 1,
-			"src": '../img/pointer.svg'
-		}))
-	});
-	var vlayer = new ol.layer.Vector({"source":vsource, "style":iconStyle});
-	vlayer.source = vsource;
-
-	let dsource = new ol.source.Vector({features: []});
-	var dotsStyle = new ol.style.Style({
-		"image": new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-			"anchor": [0.5, 0.5],
-			"anchorXUnits": 'fraction',
-			"anchorYUnits": 'fraction',
-			"opacity": 1,
-			"src": '../img/dot.svg'
-		}))
-	});
-	var dlayer = new ol.layer.Vector({"source":dsource, "style":dotsStyle});
-	dlayer.source = dsource;
-
-	let csource = new ol.source.Vector({"projection":'EPSG:4326'});
-	let clayer = new ol.layer.Vector({"source":csource});
-	clayer.source = csource;
-
 	let tsource = new ol.source.OSM({url:TILE_SERVER});
 	let tlayer = new ol.layer.Tile({"source":tsource});
-
-	let layers = [tlayer, clayer, dlayer, vlayer];
-
+	let layers = [tlayer];
 	let saved = localStorage.getItem("coords") || "[2.191783379982894, 41.4349839095253]";
 	let savedCoords = JSON.parse(saved);
-
 	let zoom = +localStorage.getItem("zoom") || 12;
-
 	let view = new ol.View({"center":ol.proj.fromLonLat(savedCoords), "zoom":zoom});
-
 	this.map = new ol.Map({"target": 'ipfsmap', "layers":layers, "view":view});
-	this.map.vlayer = vlayer;
-	this.map.dlayer = dlayer;
-	this.map.clayer = clayer;
-
 	this.map.on('moveend', (e) => {
 		let coords = ol.proj.transform(this.map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326');
 		localStorage.setItem("coords", JSON.stringify(coords));
-
 		let zoom = this.map.getView().getZoom();
 		localStorage.setItem("zoom", zoom);
 	});
