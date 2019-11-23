@@ -1,7 +1,7 @@
 # ipfsmap
 Tile server system based on IPFS
 
-This is a small project that unifies https://openstreetmap.org along with https://ipfs.io
+This is a small project that unifies https://openstreetmap.org raster tiles along with https://ipfs.io
 
 The aim is to create a free X/Y/Z tile system for developers who are creating map featured apps and have not enough resources to host a raster server or to pay for a similar service.
 
