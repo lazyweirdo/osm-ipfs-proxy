@@ -14,4 +14,11 @@ Work In Progress :)
 For now, you can try a live demo here: http://pulsartronic.duckdns.org/ don’t expect speed, specially if it is the first time your region is accessed. Gateway list is short and sometimes they fail.
 It basically access links like this one http://pulsartronic.duckdns.org/tile.php?z=7&x=66&y=46 for every tile it needs.
 
+tile.php does 3 things:
+1) requests image data from openstreetmap.org
+2) adds it to ipfs
+3) stores data about the tile, in a directory structure, you can browse here http://pulsartronic.duckdns.org/tiles/mapnik/
+It is done this way to make it dynamic and easily add the entire folder mapnik/ to ipfs and to frequently update a ipns name with the new data (soon).
+
+
 Play around with it a while, change zoom level, reload, change location ... it would help data replication and speed
