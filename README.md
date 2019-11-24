@@ -7,7 +7,7 @@ The aim is to create a free X/Y/Z tile system for developers who are creating ma
 
 Resources for this pourpose are heavy in data storage, transmission and service availability. Now they can be, somewhat, soften.
 
-The strength of IPFS is in static content storage and transmission, very helpful indeed, and OpenStreetMap gives you the data for free. You cannot use OSM as YOUR application tile server, yet you can access the data if you do it reasonably often. It is important to note that maps privided by OSM are dynamic, meaning that they change over time.
+The strength of IPFS is in static content storage and transmission, very helpful indeed, and OpenStreetMap gives you the data for free. You cannot use OSM as YOUR application tile server, yet you can access the data if you do it reasonably often. It is important to note that maps provided by OSM are dynamic, meaning that they change over time.
 
 Work In Progress :)
 
