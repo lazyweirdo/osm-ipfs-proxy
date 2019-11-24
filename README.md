@@ -1,4 +1,4 @@
-# ipfsmap
+# osm ipfs proxy
 Tile server system based on IPFS
 
 This is a small project that unifies https://openstreetmap.org raster tiles along with https://ipfs.io
