@@ -17,8 +17,6 @@ It basically access links like this one http://pulsartronic.duckdns.org/tile.php
 tile.php does 3 things:
 1) requests image data from openstreetmap.org
 2) adds it to ipfs
-3) stores data about the tile, in a directory structure, you can browse here http://pulsartronic.duckdns.org/tiles/mapnik/
-It is done this way to make it dynamic and easily add the entire folder mapnik/ to ipfs and to frequently update a ipns name with the new data (soon).
-
+3) stores data about the tile, in a directory structure, to control whether to update requested tiles or not.
 
 Play around with it a while, change zoom level, reload, change location ... it would help data replication and speed
