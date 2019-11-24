@@ -55,11 +55,11 @@ if ($add) {
 	// TODO:: unpin old hash
 }
 
-$exp_gmt = gmdate("D, d M Y H:i:s", time() + $ttl) ." GMT";
-$mod_gmt = gmdate("D, d M Y H:i:s", filemtime($file)) ." GMT";
-header("Expires: " . $exp_gmt);
-header("Last-Modified: " . $mod_gmt);
-header("Cache-Control: public, max-age=" . $ttl); 
+//$exp_gmt = gmdate("D, d M Y H:i:s", time() + $ttl) ." GMT";
+//$mod_gmt = gmdate("D, d M Y H:i:s", filemtime($file)) ." GMT";
+//header("Expires: " . $exp_gmt);
+//header("Last-Modified: " . $mod_gmt);
+//header("Cache-Control: public, max-age=" . $ttl); 
 
 $gateways = array();
 $gateways[] = 'https://ipfs.io';
