@@ -35,7 +35,7 @@ ok, work in progress ...
 
 
 
-!!!! Code is not up to date, and the following is already old, because it is not working exactly as described above, i keep it there to have something to try out, commit soon !!!!!
+!!!! Code is not up to date, and the following is already old, because it is not working exactly as described above, it only uses the gateways aproach, i keep it there to have something to try out, commit soon !!!!!
 
 As for now, you can try a live demo here: http://pulsartronic.duckdns.org/ don’t expect speed, specially if it is the first time your region is accessed. Gateway list is short and sometimes they fail
 
