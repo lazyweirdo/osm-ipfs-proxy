@@ -26,7 +26,7 @@ A proxy server:
 1) Makes (if needed) a request to a raster tile server, connects to a ipfs node, adds requested file, stores its cid (and modification date) and responds it to clients.
 Example output https://pulsartronic.com/proxy.php?z=5&x=17&y=10 it will be also possible to access the same data by referencig it as [ipns/ipfs]/Qm-cid-or-keyhash/X/Y/Z (WIP).
 To have stored cids and modification data is much lighter than to have all tiles on disk, making it suitable for cheap VPS.
-2) Does not respond with image data, it responds with a few bytes containing the cid and some other metadata.
+2) Does not respond with image data, it responds with a few bytes containing the cid and some other metadata. Image data is accessed through the ipfs network.
 3) Can also be itself a ipfs node, or it can connect to an external one, depending on available resources.
 4) Helps in mantaining tiles up to date.
 
