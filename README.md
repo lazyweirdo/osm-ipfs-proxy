@@ -18,6 +18,7 @@ A client application can ask for /X/Y/Z tiles to several sources:
 2) to a proxy server (.php files play that role)
 3) to a ipfs/ipns gateway
 4) directly through a instantiated ipfs node (using js-ipfs in this case)
+
 As efficiently as possible, the client application tries all four options.
 
 A proxy server:
