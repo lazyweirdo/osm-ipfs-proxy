@@ -31,13 +31,7 @@ Once enough tiles are introduced to ipfs, temporary unavailability of raster til
 
 Replication of proxy servers is good for the system health, no matter to whom you are asking for a tile, if it was already added by another proxy server, you are going to receive it faster and the proxy server you are connecting to, would have made data replication (or not, depending to what ipfs node it is talking to) which is again, good.
 
-ok, work in progress ...
+ok, work in progress ... you can take a first glance here https://pulsartronic.com/map.html 
 
-
-
-!!!! Code is not up to date, and the following is already old, because it is not working exactly as described above, it only uses the gateways aproach, i keep it there to have something to try out, commit soon !!!!!
-
-As for now, you can try a live demo here: http://pulsartronic.duckdns.org/ don’t expect speed, specially if it is the first time your region is accessed. Gateway list is short and sometimes they fail
-
-It basically access links like this one http://pulsartronic.duckdns.org/tile.php?z=7&x=66&y=46 for every tile it needs.
+!!!! Code here is not up to date !!!! and code in the link is not something to be proud of :) yet it works.
 
