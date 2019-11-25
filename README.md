@@ -24,7 +24,7 @@ A proxy server:
 1) Makes request to a raster tile server, connects to a ipfs node, adds requested files, stores its cid (and modification date) and responds it to clients. To have stored cids and modification data is much lighter than to have all tiles on disk, making it suitable for cheap VPS.
 2) Does not respond with image data, it responds with a few bytes containing the cid and some other metadata.
 3) Can also be itself a ipfs node, or it can connect to an external one, depending on available resources.
-4) Is helps in tile 
+4) Helps in mantaining tiles up to date.
 
 Once enough tiles are introduced to ipfs, temporary unavailability of raster tile servers, proxy servers or even gateways, wouldn't make the system completly unusable, yet free and up to date.
 
