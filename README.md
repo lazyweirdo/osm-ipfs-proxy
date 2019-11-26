@@ -13,9 +13,9 @@ Resources for this pourpose are heavy in data storage, transmission and service 
 
 The strength of IPFS is in static content storage and transmission, very helpful indeed, and OpenStreetMap gives you the data for free. You cannot use OSM as YOUR application tile server, yet you can access the data if you do it reasonably often as a single user. It is important to note that maps provided by OSM are dynamic, meaning that they change over time.
 
-Ok ... let's try to make a free, dynamic and distributed system (while trying to not to overload any server) to make a world map available for everybody, composed of raster files (it can also be done with vector tiles)
+Let's try to make a free, dynamic and distributed system (while trying to not to overload any server) to make a world map available for everybody, composed of raster files (it can also be done with vector tiles)
 
-IPFS offers several options to help in this task, let's try to use them all.
+IPFS offers several options to help in this task, i would like to try them all.
 
 A client application can ask for /Z/X/Y tiles to several sources:
 1) directly to openstreetmap.org (which we are triyng to avoid as much as possible)
