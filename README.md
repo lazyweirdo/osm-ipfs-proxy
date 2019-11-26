@@ -8,7 +8,7 @@ This is a small project that unifies https://openstreetmap.org raster tiles alon
 
 
 You can take a first glance here https://pulsartronic.com/map.html you can browse the code, you are going find some implemented things below described.
-It is a map application in which image storage is distributed, play with it, reload the page several times, change position and zoom, till your region is fully introduced and replicated through out enough ipfs nodes (including yours), then it will be fast enough to be fully functional even to other users.
+It is a map application in which image storage is distributed, play with it, reload the page several times, change position and zoom, till your region is fully introduced and replicated throughout enough ipfs nodes (including yours), then it will be fast enough to be fully functional even to other users.
 
 
 The aim is to create a free X/Y/Z tile system for developers who are making map featured apps and have not enough resources to host a raster server nor to pay for a similar service.
