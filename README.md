@@ -6,14 +6,17 @@ Tile server system based on IPFS
 
 This is a small project that unifies https://openstreetmap.org raster tiles along with https://ipfs.io
 
+
+You can take a first glance here https://pulsartronic.com/map.html you can browse the code, you are going find some implemented things below described.
+It is a map application in which image storage is distributed, play with it, reload the page several times, change position and zoom, till your region is fully introduced and replicated through out enough ipfs nodes (including yours), then it will be fast enough to be fully functional even to other users.
+
+
 The aim is to create a free X/Y/Z tile system for developers who are making map featured apps and have not enough resources to host a raster server nor to pay for a similar service.
 Example tile /Z/X/Y output: http://a.tile.openstreetmap.org/5/17/12.png
 
 Resources for this pourpose are heavy in data storage, transmission and service availability. Now they can be, somewhat, soften.
 
 The strength of IPFS is in static content storage and transmission, very helpful indeed, and OpenStreetMap gives you the data for free. You cannot use OSM as YOUR application tile server, yet you can access the data if you do it reasonably often as a single user. It is important to note that maps provided by OSM are dynamic, meaning that they change over time.
-
-Let's try to make a free, dynamic and distributed system (while trying to not to overload any server) to make a world map available for everybody, composed of raster files (it can also be done with vector tiles)
 
 IPFS offers several options to help in this task, i would like to try them all.
 
@@ -37,8 +40,7 @@ Once enough tiles are introduced to ipfs, temporary unavailability of raster til
 
 Replication of proxy servers is also good for the system health, no matter to what proxy you are asking for a tile, if it was already added by another proxy server, you are going to receive it faster and the proxy server you are connecting to, would have made data replication, which is good.
 
-ok, it is a work in progress ... you can take a first glance here https://pulsartronic.com/map.html browse its code, you will find some (not much elegant) implemented things above described.
-Play with it, reload the page several times, change position and zoom, till your region is fully introduced and replicated through out enough ipfs nodes (including yours), then it will be fast enough to be fully functional even to other users.
+ok, it is a work in progress ... 
 
 Contribute :P
 
