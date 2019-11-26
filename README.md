@@ -37,8 +37,8 @@ Once enough tiles are introduced to ipfs, temporary unavailability of raster til
 
 Replication of proxy servers is also good for the system health, no matter to what proxy you are asking for a tile, if it was already added by another proxy server, you are going to receive it faster and the proxy server you are connecting to, would have made data replication, which is good.
 
-ok, work in progress ... you can take a first glance here https://pulsartronic.com/map.html browse its code, you will find some (not much elegant) implemented things above described.
-Play with it, reload the page several times, change position and zoom, till your region is fully introduced and replicated through enough ipfs nodes (including yours), then it will be fast enough to be fully functional even to other users.
+ok, it is a work in progress ... you can take a first glance here https://pulsartronic.com/map.html browse its code, you will find some (not much elegant) implemented things above described.
+Play with it, reload the page several times, change position and zoom, till your region is fully introduced and replicated through out enough ipfs nodes (including yours), then it will be fast enough to be fully functional even to other users.
 
-!!!! Code here is not up to date !!!! and code in the link is not something to be proud of ... commit soon :!
+Contribute :P
 
