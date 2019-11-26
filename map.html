@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>pulsartronic.com - IPFS Map</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="apple-touch-icon" href="/img/memory-chip.png">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" sizes="196x196" href="https://pulsartronic.com/img/memory-chip.png">
+		<meta name="Description" content="GPS tracker">
+		<link rel="canonical" href="https://pulsartronic.com" />
+		
+		<meta property="og:image" content="https://pulsartronic.com/img/memory-chip.png"/>
+		<meta property="og:title" content="IPFS tile server"/>
+		<meta property="og:type" content="game"/>
+		<meta property="og:url" content="https://pulsartronic.com"/>
+		<meta property="og:site_name" content=""/>
+		<meta property="og:description" content="IPFS tile server example"/>
+
+		<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/ipfs/dist/index.min.js"></script>
+		<script src="https://pulsartronic.com/lib/std.js"></script>
+	</head>
+
+	<body style="position:absolute;top:0;bottom:0;left:0;right:0;margin:0;padding:0;">
+		<div id="ipfsmap" style="position:absolute;top:0;bottom:0;left:0;right:0;"></div>
+	</body>
+</html>
+
+<script>
+/**
+ * This function tries to get image data through our ipfs node
+ */
+async function NodeImageRequest(imageElement, cid) {
+	// here is where magic happens ... :)
+	let fileBuffer = await ipfsmap.node.cat(cid);
+	// if execution is correct, here we would have cached this file no matter what, which is good
+	// part of ipfs magic is to create a shareable cache
+	// if at this point imageElement.waiting is still equals to cid
+	if (imageElement.waiting == cid) {
+		// delete 'waiting' property
+		delete imageElement.waiting;
+		// and set image data in base64 format, do you know a better way ? ... i'm sure it is
+		let b64 = fileBuffer.buffer.toB64();
+		imageElement.src = "data:image/png;base64," + b64;
+	}
+}
+
+/**
+ * This function tries to get image data from a random gateway through HTTP[s] protocol
+ */
+function GatewayImageRequest(imageElement, cid) {
+	// because this function is called some time after we try to get image data through our ipfs node
+	// we check if imageElement.waiting is still the same cid we set before
+	if (imageElement.waiting == cid) { // if it is
+		// get a random gateway
+		var gatewaySRC = randomGatewaySource(cid);
+		// and set it as the image element src
+		imageElement.src = gatewaySRC;
+		
+		imageElement.onload = function(e) {
+			// here we modify this property in order to let other 
+			delete this.waiting;
+		};
+
+		imageElement.onerror = function(e) {
+			if (this.waiting == cid) {
+				imageElement.src = randomGatewaySource(cid);
+				console.log("error loding image: " + e + " trying again: " + imageElement.src);
+			}
+		};
+	}
+}
+
+/**
+ * This function is called when we obtained data about a tile
+ */
+function onData(tile, data) {
+	// tile contains a img element
+	var imageElement = tile.getImage();
+
+	// we set this property because we are going to obtain the actual image data from multiple sources.
+	// This process takes time, this property will be useful when data arrives.
+	imageElement.waiting = data.cid;
+
+	// We try to get the data through our node
+	setTimeout(NodeImageRequest, 0, imageElement, data.cid);
+	// Then we try to get it through a gateway
+	setTimeout(GatewayImageRequest, 2000, imageElement, data.cid); // 2 seconds, why? well, you know
+	// last thing we can do
+	// setTimeout(OSMImageRequest, 20000, imageElement, data.cid); // 2 seconds, why? well, you know
+}
+
+/**
+ * This function returns a random gateway.
+ */
+function randomGatewaySource(cid) {
+	// TODO:: use a better way to get working gateways
+	let gateways = [
+		 'https://ipfs.io'
+		,'https://gateway.ipfs.io'
+		,'https://ipfs.infura.io'
+		,'https://ninetailed.ninja'
+		,'https://gateway.pinata.cloud'
+		,'https://gateway.temporal.cloud'
+		,'https://ipfs.wa.hle.rs'
+		,'http://pulsartronic.duckdns.org:8080'
+		,'http://pulsartronic.duckdns.org:8080'
+		,'http://pulsartronic.duckdns.org:8080'
+		,'http://pulsartronic.duckdns.org:8080'
+	];
+	let rnd = Math.random();
+	let index = Math.floor(rnd * gateways.length);
+	let gateway = gateways[index];
+	return gateway + `/ipfs/${cid}`;
+}
+
+/**
+ * This function requests data from a proxy server
+ * responses look like this:
+ *    {"cid": "QmYUueC7cyUH4NyHa2Pc5FWqaCWbsAmDCV6LKw359GHuiC","update":"1574797293"}
+ */
+function HttpDataRequest(tile, src) {
+	// here we could chose a random proxy server
+	let request = new XMLHttpRequest();
+	request.open('GET', src);
+	request.onreadystatechange = async function() {
+		if (4 == request.readyState) {
+			if (200 == request.status) {
+             try {
+					let data = JSON.parse(request.responseText);
+					onData(tile, data);
+             } catch(e) {
+                 console.error(e, e.stack);
+             }
+			} // TODO:: process statuses other than 200
+		}
+	};
+
+	request.onerror = (e) => {
+        console.log('Network error, trying again ...');
+        setTimeout(HttpDataRequest, 3 * 1000, tile, src);
+	};
+
+	request.send();
+}
+
+function IpfsDataRequest(tile, src) {
+	// unimplemented yet
+}
+
+/**
+ * this function is called by the map when it needs image data about a tile
+ * 'src' already contains /Z/X/Y information at this point, it looks like 'proxy.php?z=16&x=32068&y=24741'
+ */
+function customLoader(tile, src) {
+	// we try to get it through /ipns/QmekwaerkHyi8z75WCfhRqJeSqSoCeg28RfAF6ZXnD57B5/Z/X/Y
+	IpfsDataRequest(tile, src);
+	// and also try to get it through a web server. It is probably the most up to date source
+	HttpDataRequest(tile, src);
+}
+
+// ////////////////////////////////////////////////////////////////////
+// PROGRAM ENTRY POINT ////////////////////////////////////////////////
+let ipfsmap = {};
+ipfsmap.node = null;
+ipfsmap.map  = null;
+ipfsmap.init = async function() {
+	// create a ipfs node, see https://ipfs.io for more details
+	this.node = await window.Ipfs.create();
+	let version = await this.node.version();
+	console.log('Version:', version.version);
+
+	// Here we create a map system, see https://openlayers.org for details
+	let tsource = new ol.source.OSM({url:"proxy.php?z={z}&x={x}&y={y}"});
+	tsource.setTileLoadFunction(customLoader)
+	let tlayer = new ol.layer.Tile({"source":tsource});
+	let layers = [tlayer];
+	let saved = localStorage.getItem("coords") || "[2.191783379982894, 41.4349839095253]";
+	let savedCoords = JSON.parse(saved);
+	let zoom = +localStorage.getItem("zoom") || 4;
+	let view = new ol.View({"center":ol.proj.fromLonLat(savedCoords), "zoom":zoom});
+	this.map = new ol.Map({"target": 'ipfsmap', "layers":layers, "view":view});
+	this.map.on('moveend', (e) => {
+		let coords = ol.proj.transform(this.map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326');
+		localStorage.setItem("coords", JSON.stringify(coords));
+		let zoom = this.map.getView().getZoom();
+		localStorage.setItem("zoom", zoom);
+	});
+};
+
+window.onload = ipfsmap.init.bind(ipfsmap);
+
+</script>
