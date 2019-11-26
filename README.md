@@ -1,5 +1,5 @@
 # osm ipfs proxy
-map.html and proxy.php are in a cheap VPS
+map.html and proxy.php are in a cheap VPS.
 ipfstile.php is in a separate server, with more disk capacity
 
 Tile server system based on IPFS
