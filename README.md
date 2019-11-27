@@ -1,15 +1,14 @@
 # osm ipfs proxy
-map.html and proxy.php are in a cheap VPS.
-ipfstile.php is in a separate server, with more disk capacity
 
 Tile server system based on IPFS
 
-This is a small project that unifies https://openstreetmap.org raster tiles along with https://ipfs.io
-
+This small project tries to unify https://openstreetmap.org raster tiles along with https://ipfs.io
 
 You can take a first glance here https://pulsartronic.com/map.html you can browse the code, you are going find some implemented things below described.
 It is a map application in which image storage is distributed, play with it, reload the page several times, change position and zoom, till your region is fully introduced and replicated throughout enough ipfs nodes (including yours), then it will be fast enough to be fully functional even to other users.
 
+map.html and proxy.php are in a cheap VPS.
+ipfstile.php is in a separate server, with more disk capacity
 
 The aim is to create a free X/Y/Z tile system for developers who are making map featured apps and have not enough resources to host a raster server nor to pay for a similar service.
 Example tile /Z/X/Y output: http://a.tile.openstreetmap.org/5/17/12.png
