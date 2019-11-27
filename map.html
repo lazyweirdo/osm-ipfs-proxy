@@ -26,6 +26,9 @@
 
 	<body style="position:absolute;top:0;bottom:0;left:0;right:0;margin:0;padding:0;">
 		<div id="ipfsmap" style="position:absolute;top:0;bottom:0;left:0;right:0;"></div>
+		<div style="position:absolute;bottom:0;right:0;background-color:rgba(235, 235, 235, 0.75);padding: 3px;border-radius:3px;">
+			© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors.
+		</div>
 	</body>
 </html>
 
@@ -175,7 +178,7 @@ ipfsmap.init = async function() {
 
 	// Here we create a map system, see https://openlayers.org for details
 	let tsource = new ol.source.OSM({url:"proxy.php?z={z}&x={x}&y={y}"});
-	tsource.setTileLoadFunction(customLoader)
+	tsource.setTileLoadFunction(customLoader);
 	let tlayer = new ol.layer.Tile({"source":tsource});
 	let layers = [tlayer];
 	let saved = localStorage.getItem("coords") || "[2.191783379982894, 41.4349839095253]";
