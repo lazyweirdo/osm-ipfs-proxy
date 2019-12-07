@@ -12,6 +12,7 @@ $path = "tiles/mapnik/${z}/${x}";
 $file = "${path}/${y}.json";
 
 $cid = false;
+$update = false;
 
 $isFile = is_file($file);
 if ($isFile) {
@@ -19,10 +20,11 @@ if ($isFile) {
 	$json = json_decode($content, true);
 	if ($json) {
 		$cid = $json["cid"];
+		$update = $json["update"];
 	}
 }
 
-$add = !$cid or filemtime($file) < (time() - $ttl);
+$add = !$cid or $update < (time() - $ttl);
 if ($add) {
 	if (!is_dir($path)) {
 		mkdir($path, 0777, true);

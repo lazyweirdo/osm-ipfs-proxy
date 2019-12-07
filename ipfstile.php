@@ -7,7 +7,7 @@ $repo = "/home/pulsartronic/.ipfs";
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
 
-//cache timeout in seconds
+// cache timeout in seconds
 $ttl = 14 * 24 * 60 * 60;
 
 $x = intval($_GET['x']);
@@ -28,7 +28,10 @@ if ($isFile) {
 	}
 }
 
-$add = !$cid or filemtime($file) < (time() - $ttl);
+$now = time();
+$diff = $now - $ttl;
+$add = !$cid || $update < $diff;
+
 if ($add) {
 	$rnd = uniqid();
 	$tempfile = "tiles/mapnik-${z}-${x}-${y}-${rnd}.png";

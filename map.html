@@ -74,13 +74,13 @@ function GatewayImageRequest(imageElement, cid) {
 				console.log("error loding image: " + e + " trying again: " + imageElement.src);
 			}
 		};
-	}
+	} // if it isn't, do nothing, it means we have got the data through another sourcealready
 }
 
 /**
  * This function is called when we obtained data about a tile
  */
-function onData(tile, data) {
+async function onData(tile, src, data) {
 	// tile contains a img element
 	var imageElement = tile.getImage();
 
@@ -128,13 +128,23 @@ function randomGatewaySource(cid) {
 function HttpDataRequest(tile, src) {
 	// here we could chose a random proxy server
 	let request = new XMLHttpRequest();
-	request.open('GET', src);
+	request.open('GET', "https://pulsartronic.com/" + src);
 	request.onreadystatechange = async function() {
 		if (4 == request.readyState) {
 			if (200 == request.status) {
              try {
-					let data = JSON.parse(request.responseText);
-					onData(tile, data);
+					let dataSTR = request.responseText;
+					let data = JSON.parse(dataSTR);
+
+					let path = Path(src);
+					try {
+						let encoder = new TextEncoder("UTF-8");
+						let dataBuffer = encoder.encode(dataSTR);
+						await ipfsmap.node.files.write(path, dataBuffer, {"create":true,"parents":true});
+					} catch(ee) {
+						console.log("Error while trying to write to a file: " + path);
+					}
+					onData(tile, src, data);
              } catch(e) {
                  console.error(e, e.stack);
              }
@@ -150,19 +160,52 @@ function HttpDataRequest(tile, src) {
 	request.send();
 }
 
-function IpfsDataRequest(tile, src) {
+function IpnsDataRequest(tile, src) {
 	// unimplemented yet
+}
+
+function PubSubDataRequest(tile, src) {
+	// unimplemented yet
+}
+
+function Path(src) {
+	let url = new URL(src, document.location);
+	let Z = url.searchParams.get("z");
+	let X = url.searchParams.get("x");
+	let Y = url.searchParams.get("y");
+	let filename = `/mapnik/${Z}/${X}/${Y}.json`;
+	return filename;
 }
 
 /**
  * this function is called by the map when it needs image data about a tile
  * 'src' already contains /Z/X/Y information at this point, it looks like 'proxy.php?z=16&x=32068&y=24741'
  */
-function customLoader(tile, src) {
-	// we try to get it through /ipns/QmekwaerkHyi8z75WCfhRqJeSqSoCeg28RfAF6ZXnD57B5/Z/X/Y
-	IpfsDataRequest(tile, src);
-	// and also try to get it through a web server. It is probably the most up to date source
-	HttpDataRequest(tile, src);
+async function customLoader(tile, src) {
+	let ask = true;
+	try {
+		let path = Path(src);
+		let file = await ipfsmap.node.files.read(path);
+		let decoder = new TextDecoder("UTF-8");
+		let dataSTR = decoder.decode(file);
+		let data = JSON.parse(dataSTR);
+		let ttl = 14 * 24 * 60 * 60;
+		let now = Date.now() / 1000;
+		let diff = now - data.update;
+		ask = (diff > ttl);
+		onData(tile, src, data);
+	} catch(e) {
+		// console.log(e);
+	}
+	
+	if (ask) {
+		// we try to get it through /ipns/QmekwaerkHyi8z75WCfhRqJeSqSoCeg28RfAF6ZXnD57B5/Z/X/Y
+		IpnsDataRequest(tile, src);
+		// also we try to get it through pubsub. Maybe there is someone who has this tile data already
+		PubSubDataRequest(tile, src);
+		// and we also try to get it through a web server. It is probably the most up to date source
+		HttpDataRequest(tile, src);
+	}
 }
 
 // ////////////////////////////////////////////////////////////////////
@@ -180,6 +223,7 @@ ipfsmap.init = async function() {
 			Addresses: {
 				Swarm: [
 					'/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
+					,'/dns4/pulsartronic.com/tcp/9090/wss/p2p-websocket-star'
 				]
 			}
 		}
