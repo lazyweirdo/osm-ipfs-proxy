@@ -1,8 +1,14 @@
 <?php
+// repo path, i need it because we excute commands from this script wich has a different context
+// Do you know how to do it ?
+$repo = "/home/pulsartronic/.ipfs";
+
+// Allow access for all domains
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
 
-$ttl = 14 * 24 * 60 * 60; //cache timeout in seconds
+//cache timeout in seconds
+$ttl = 14 * 24 * 60 * 60;
 
 $x = intval($_GET['x']);
 $y = intval($_GET['y']);
@@ -24,7 +30,6 @@ if ($isFile) {
 
 $add = !$cid or filemtime($file) < (time() - $ttl);
 if ($add) {
-
 	$rnd = uniqid();
 	$tempfile = "tiles/mapnik-${z}-${x}-${y}-${rnd}.png";
 
@@ -44,18 +49,22 @@ if ($add) {
 	fflush($fp);    // need to insert this line for proper output when tile is first requestet
 	fclose($fp);
 
-	$hash = exec("export IPFS_PATH=/home/pulsartronic/.ipfs; ipfs add $tempfile -q");
+	$hash = exec("export IPFS_PATH=$repo; ipfs add $tempfile -q");
 	unlink($tempfile);
 
 	$time = time();
-	$content = '{"cid": "'.$hash.'","update":"'.$time.'"}'; // get hash
+	$content = '{"cid":"'.$hash.'","update":"'.$time.'"}'; // get hash
 	if (!is_dir($path)) {
 		mkdir($path, 0777, true);
 	}
 	file_put_contents($file, $content);
 
-	$cid = !$cid ? $hash : $cid;
-	// TODO:: check and unpin old hash
+	$rmpin = !!$cid && ($cid != $hash);
+	if ($rmpin) {
+		exec("export IPFS_PATH=$repo; ipfs pin rm $cid");
+	}
+
+	$cid = $hash;
 }
 
 $exp_gmt = gmdate("D, d M Y H:i:s", time() + $ttl) ." GMT";
